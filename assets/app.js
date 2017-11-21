@@ -1,7 +1,9 @@
 var animalArray = ["elephant", "hamster", "chicken", "cat", "dog", "ostrich", "cougar", "wolf", "polar bear", "tuna", "lobster", "alligator", "falcon"];
 
 
-//---------------------------------- On Load
+
+
+//---------------- On Load, make a button for each animal in the array
 var onLoad = function() {
 	for (var i = 0; i < animalArray.length; i++) {
 		newButton(animalArray[i], "animal");
@@ -11,9 +13,13 @@ var onLoad = function() {
 
 
 
-// ----------------------- Populate GIFs
+// ----------------------------------------- Populate GIFs
 var populate = function() {
+
+	// Clear any gifs already displaying on the screen
 	$("#results").empty();
+
+	// Get the name of the animal and add it to the queryUrl
 	var animalName = $(this).text();
 	var queryURL = "https://api.giphy.com/v1/gifs/search?api_key=dc6zaTOxFJmzC&limit=10&q=" + animalName;
 
@@ -21,14 +27,21 @@ var populate = function() {
 		url: queryURL,
 		method: "GET"
 	}).done(function(response) {
-		console.log(response.data[0]);
 		for (var i = 0; i < 10; i++) {
+
+			// Get the URLs and Rating fron the returned JSON data
 			var imageUrl = response.data[i].images.fixed_height.url;
 			var stillUrl = response.data[i].images.fixed_height_still.url;
 			var rating = response.data[i].rating;
+
+			// Create a parent div to put the rating and gif inside
 			var itemDiv = $("<div>")
 			itemDiv.addClass("item-div");
+
+			// Add the rating to the parent div
 			itemDiv.html("<p>Rating: " + rating + "</p>");
+
+			// Create an img element with the gif info, and add to parent div
 			var animalImage = $("<img>");
 			animalImage.attr("src", stillUrl);
 			animalImage.attr("data-still", stillUrl);
@@ -36,6 +49,8 @@ var populate = function() {
 			animalImage.attr("data-state", "still");
 			animalImage.addClass("gif");
 			itemDiv.append(animalImage)
+
+			// Add the parent div to the html
 			$("#results").prepend(itemDiv);
 		}
 	});
@@ -44,12 +59,22 @@ var populate = function() {
 
 
 
-//------------------------ Search function
+//----------------------------------------- Add New Animals
 var addAnimal = function() {
 	event.preventDefault();
-	var name = $("#name-input").val();
-	animalArray.push(name);
-	newButton(name, "animal");
+	var name = $("#name-input").val().trim().toLowerCase();
+
+	// Check to make sure the submitted name is not already in the list
+	if (animalArray.indexOf(name) == -1) {
+
+		// If not, get the submitted name, make a button, and add it to the array
+		newButton(name, "animal");
+		animalArray.push(name);
+	}
+	else {
+		// Otherwise, tell the user the animal is in the list
+		alert("That animal is already in the list.");
+	}
 }
 
 
