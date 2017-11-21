@@ -1,0 +1,26 @@
+html {
+	min-height: 100%;
+	background-color: lightgreen;
+}
+
+.gif {
+	margin: 5px;
+}
+
+.animal {
+	margin-right: 10px;
+}
+
+.item-div {
+	float: left;
+}
+
+#page-wrapper {
+	background-color: lightgreen;
+}
+
+.header {
+	margin: 0px;
+	padding: 15px;
+	background-color: green;
+}
